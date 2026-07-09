@@ -1,0 +1,1066 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🍋 Lemon Clicker Game 🍋</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        /* Discord Modal */
+        .discord-modal {
+            display: flex;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            justify-content: center;
+            align-items: center;
+        }
+
+        .discord-content {
+            background: white;
+            padding: 40px;
+            border-radius: 20px;
+            text-align: center;
+            max-width: 500px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+
+        .discord-content h2 {
+            color: #333;
+            margin-bottom: 20px;
+            font-size: 2em;
+        }
+
+        .discord-content p {
+            color: #666;
+            margin-bottom: 20px;
+            font-size: 1.1em;
+        }
+
+        .discord-button {
+            background: linear-gradient(135deg, #5865F2 0%, #4752C4 100%);
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            font-size: 1.1em;
+            border-radius: 10px;
+            cursor: pointer;
+            margin: 10px;
+            transition: transform 0.2s;
+            font-weight: bold;
+        }
+
+        .discord-button:hover {
+            transform: scale(1.05);
+        }
+
+        .discord-button.close {
+            background: #ff6b6b;
+        }
+
+        .discord-icon {
+            font-size: 3em;
+            margin-bottom: 15px;
+        }
+
+        /* Main Container */
+        .container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            padding: 40px;
+            max-width: 900px;
+            width: 100%;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+            font-size: 2.5em;
+            flex: 1;
+            min-width: 200px;
+        }
+
+        .header-buttons {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .btn-header {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s;
+            white-space: nowrap;
+            font-size: 0.9em;
+        }
+
+        .btn-header:hover {
+            background: #764ba2;
+            transform: translateY(-2px);
+        }
+
+        .discord-join-btn {
+            background: #5865F2;
+            color: white;
+        }
+
+        .discord-join-btn:hover {
+            background: #4752C4;
+        }
+
+        .stats-bar {
+            background: linear-gradient(135deg, #f0f0f0 0%, #ffffff 100%);
+            padding: 20px;
+            border-radius: 10px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+            border: 2px solid #667eea;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-item span {
+            color: #667eea;
+            font-weight: bold;
+            font-size: 1.5em;
+            display: block;
+        }
+
+        .stat-item p {
+            color: #666;
+            font-size: 0.9em;
+            margin-top: 5px;
+        }
+
+        .game-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
+            background: #f9f9f9;
+            padding: 25px;
+            border-radius: 15px;
+            border: 2px solid #FFD700;
+        }
+
+        .stat {
+            text-align: center;
+        }
+
+        .stat .label {
+            display: block;
+            color: #666;
+            font-size: 0.95em;
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+
+        .stat .value {
+            display: block;
+            font-size: 2em;
+            font-weight: bold;
+            color: #FFD700;
+        }
+
+        .clicker-area {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .lemon-button {
+            width: 180px;
+            height: 180px;
+            border-radius: 50%;
+            border: 4px solid #FFA500;
+            background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%);
+            font-size: 100px;
+            cursor: pointer;
+            transition: transform 0.1s, box-shadow 0.1s;
+            box-shadow: 0 15px 30px rgba(255, 215, 0, 0.5);
+            margin-bottom: 20px;
+        }
+
+        .lemon-button:hover {
+            transform: scale(1.1);
+        }
+
+        .lemon-button:active {
+            transform: scale(0.9);
+        }
+
+        .click-hint {
+            color: #666;
+            font-size: 1em;
+            font-weight: bold;
+        }
+
+        .click-value {
+            color: #FFD700;
+            font-size: 1.2em;
+            font-weight: bold;
+            margin-top: 10px;
+        }
+
+        .upgrades {
+            margin-bottom: 40px;
+        }
+
+        .upgrades h2 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 25px;
+            font-size: 1.8em;
+        }
+
+        .upgrade-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+        }
+
+        .upgrade {
+            background: linear-gradient(135deg, #f9f9f9 0%, #ffffff 100%);
+            border: 3px solid #ddd;
+            border-radius: 15px;
+            padding: 20px;
+            text-align: center;
+            transition: all 0.3s;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .upgrade:hover {
+            border-color: #FFD700;
+            box-shadow: 0 10px 25px rgba(255, 215, 0, 0.3);
+            transform: translateY(-5px);
+        }
+
+        .upgrade h3 {
+            color: #333;
+            font-size: 1.2em;
+            margin-bottom: 10px;
+        }
+
+        .upgrade p {
+            color: #666;
+            font-size: 0.9em;
+            margin-bottom: 15px;
+            min-height: 40px;
+        }
+
+        .upgrade-info {
+            font-size: 0.8em;
+            color: #999;
+            margin-bottom: 10px;
+        }
+
+        .buy-btn {
+            background: #FFD700;
+            border: none;
+            border-radius: 8px;
+            padding: 12px 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            width: 100%;
+            font-size: 0.95em;
+        }
+
+        .buy-btn:hover:not(:disabled) {
+            background: #FFA500;
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(255, 165, 0, 0.3);
+        }
+
+        .buy-btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            opacity: 0.6;
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 2px solid #f0f0f0;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-bottom: 15px;
+        }
+
+        .reset-btn, .settings-btn {
+            background: #ff6b6b;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s;
+            font-size: 0.95em;
+        }
+
+        .reset-btn:hover, .settings-btn:hover {
+            background: #ff5252;
+            transform: translateY(-2px);
+        }
+
+        .settings-btn {
+            background: #667eea;
+        }
+
+        .settings-btn:hover {
+            background: #764ba2;
+        }
+
+        .footer p {
+            color: #999;
+            font-size: 0.9em;
+            margin-top: 15px;
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 999;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.6);
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .modal-content {
+            background-color: white;
+            margin: 5% auto;
+            padding: 40px;
+            border-radius: 20px;
+            width: 90%;
+            max-width: 600px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            max-height: 85vh;
+            overflow-y: auto;
+            animation: slideIn 0.3s ease;
+        }
+
+        @keyframes slideIn {
+            from { transform: translateY(-50px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        .close-modal {
+            color: #aaa;
+            float: right;
+            font-size: 32px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: color 0.3s;
+        }
+
+        .close-modal:hover {
+            color: #000;
+        }
+
+        .modal h2 {
+            color: #333;
+            margin-bottom: 20px;
+            margin-right: 30px;
+        }
+
+        .modal input, .modal textarea, .modal select {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 15px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-family: Arial, sans-serif;
+            font-size: 1em;
+            transition: border-color 0.3s;
+        }
+
+        .modal input:focus, .modal textarea:focus, .modal select:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .modal button {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            width: 100%;
+            margin-top: 10px;
+            font-size: 1em;
+            transition: all 0.3s;
+        }
+
+        .modal button:hover {
+            background: #764ba2;
+            transform: translateY(-2px);
+        }
+
+        .achievement {
+            background: #FFD700;
+            color: #333;
+            padding: 15px 20px;
+            border-radius: 8px;
+            margin: 10px 0;
+            font-weight: bold;
+            text-align: center;
+            animation: slideIn 0.5s ease;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 25px;
+            }
+
+            h1 {
+                font-size: 1.8em;
+            }
+
+            .lemon-button {
+                width: 140px;
+                height: 140px;
+                font-size: 70px;
+            }
+
+            .upgrade-list {
+                grid-template-columns: 1fr;
+            }
+
+            .header {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .header-buttons {
+                width: 100%;
+            }
+
+            .stats-bar {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .modal-content {
+                width: 95%;
+                padding: 25px;
+                margin: 50% auto;
+            }
+        }
+
+        @media (max-width: 480px) {
+            body {
+                padding: 10px;
+            }
+
+            .container {
+                padding: 15px;
+                border-radius: 15px;
+            }
+
+            h1 {
+                font-size: 1.5em;
+            }
+
+            .lemon-button {
+                width: 120px;
+                height: 120px;
+                font-size: 60px;
+            }
+
+            .game-stats {
+                grid-template-columns: 1fr;
+            }
+
+            .stats-bar {
+                grid-template-columns: 1fr;
+            }
+
+            .upgrade-list {
+                grid-template-columns: 1fr;
+            }
+
+            .header-buttons {
+                flex-direction: column;
+                width: 100%;
+            }
+
+            .btn-header {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Discord Invite Modal - Shows only ONCE on first visit -->
+    <div id="discordModal" class="discord-modal">
+        <div class="discord-content">
+            <div class="discord-icon">👾</div>
+            <h2>Join Our Discord Server!</h2>
+            <p>🎮 Play with friends and compete on leaderboards!</p>
+            <p style="font-size: 0.95em; color: #999;">Share strategies, discuss updates, and connect with other players</p>
+            
+            <button class="discord-button" onclick="openDiscord()">
+                💜 Join Discord Server
+            </button>
+            <button class="discord-button close" onclick="closeDiscord()">Maybe Later</button>
+        </div>
+    </div>
+
+    <!-- Settings Modal -->
+    <div id="settingsModal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal" onclick="closeSettings()">&times;</span>
+            <h2>⚙️ Settings</h2>
+
+            <label style="color: #333; font-weight: bold;">Game Theme:</label>
+            <select id="themeSelect" onchange="changeTheme()">
+                <option value="dark">Dark (Purple)</option>
+                <option value="light">Light (Blue)</option>
+                <option value="green">Nature (Green)</option>
+            </select>
+
+            <label style="color: #333; font-weight: bold; display: block; margin-top: 15px;">Sound Effects:</label>
+            <input type="checkbox" id="soundToggle" checked> Enable sounds
+
+            <h3 style="margin-top: 25px; color: #333;">📈 Game Statistics</h3>
+            <div id="statsDisplay" style="background: #f9f9f9; padding: 15px; border-radius: 10px; margin: 15px 0;">
+                <p><strong>Total Lemons Earned:</strong> <span id="totalLemons">0</span></p>
+                <p><strong>Play Time:</strong> <span id="playTime">0</span> minutes</p>
+                <p><strong>Total Clicks:</strong> <span id="totalClicks">0</span></p>
+                <p><strong>Upgrades Purchased:</strong> <span id="totalUpgrades">0</span></p>
+            </div>
+
+            <button onclick="exportGame()" style="background: #667eea; margin-top: 15px;">💾 Export Game Data</button>
+            <button onclick="importGame()" style="background: #764ba2; margin-top: 10px;">📥 Import Game Data</button>
+
+            <h3 style="margin-top: 25px; color: #5865F2;">💜 Community</h3>
+            <button onclick="openDiscord()" class="discord-join-btn" style="margin-top: 10px; width: 100%;">💜 Join Discord Server</button>
+
+            <h3 style="margin-top: 25px; color: #ff6b6b;">⚠️ Danger Zone</h3>
+            <button onclick="deleteAllData()" style="background: #ff6b6b; margin-top: 10px;">🗑️ Delete All Data</button>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="header">
+            <h1>🍋 Lemon Clicker 🍋</h1>
+            <div class="header-buttons">
+                <button class="btn-header discord-join-btn" onclick="openDiscord()">💜 Discord</button>
+                <button class="btn-header" onclick="openSettings()">⚙️ Settings</button>
+            </div>
+        </div>
+
+        <!-- Visitor Stats Bar -->
+        <div class="stats-bar">
+            <div class="stat-item">
+                <span id="visitorCount">1</span>
+                <p>👥 Visitors Today</p>
+            </div>
+            <div class="stat-item">
+                <span id="onlineUsers">1</span>
+                <p>🟢 Online Now</p>
+            </div>
+        </div>
+
+        <!-- Game Stats -->
+        <div class="game-stats">
+            <div class="stat">
+                <span class="label">🍋 Lemons</span>
+                <span class="value" id="lemonCount">0</span>
+            </div>
+            <div class="stat">
+                <span class="label">⚡ Per Click</span>
+                <span class="value" id="perClick">1</span>
+            </div>
+            <div class="stat">
+                <span class="label">⏱️ Per Second</span>
+                <span class="value" id="perSecond">0</span>
+            </div>
+        </div>
+
+        <!-- Clicker Area -->
+        <div class="clicker-area">
+            <button class="lemon-button" id="lemonBtn">🍋</button>
+            <p class="click-hint">Click the lemon to earn!</p>
+            <p class="click-value" id="clickValue">+1 per click</p>
+        </div>
+
+        <!-- Achievements Section -->
+        <div id="achievementsContainer" style="margin: 20px 0;"></div>
+
+        <!-- Upgrades -->
+        <div class="upgrades">
+            <h2>⭐ Upgrades & Buildings</h2>
+            <div class="upgrade-list">
+                <div class="upgrade">
+                    <h3>⚡ Better Click</h3>
+                    <p>+5 lemons per click</p>
+                    <div class="upgrade-info">You own: <span class="owned-better_click">0</span></div>
+                    <button class="buy-btn" data-upgrade="better_click">Cost: 10 🍋</button>
+                </div>
+                <div class="upgrade">
+                    <h3>🤖 Auto Picker</h3>
+                    <p>+1 lemon per second</p>
+                    <div class="upgrade-info">You own: <span class="owned-auto_picker">0</span></div>
+                    <button class="buy-btn" data-upgrade="auto_picker">Cost: 50 🍋</button>
+                </div>
+                <div class="upgrade">
+                    <h3>🌳 Lemon Tree</h3>
+                    <p>+5 lemons per second</p>
+                    <div class="upgrade-info">You own: <span class="owned-lemon_tree">0</span></div>
+                    <button class="buy-btn" data-upgrade="lemon_tree">Cost: 200 🍋</button>
+                </div>
+                <div class="upgrade">
+                    <h3>🚜 Mega Farm</h3>
+                    <p>+20 lemons per second</p>
+                    <div class="upgrade-info">You own: <span class="owned-mega_farm">0</span></div>
+                    <button class="buy-btn" data-upgrade="mega_farm">Cost: 1,000 🍋</button>
+                </div>
+                <div class="upgrade">
+                    <h3>⚡⚡ Super Click</h3>
+                    <p>+5 lemons per click</p>
+                    <div class="upgrade-info">You own: <span class="owned-super_click">0</span></div>
+                    <button class="buy-btn" data-upgrade="super_click">Cost: 500 🍋</button>
+                </div>
+                <div class="upgrade">
+                    <h3>🏭 Lemon Factory</h3>
+                    <p>+100 lemons per second</p>
+                    <div class="upgrade-info">You own: <span class="owned-lemon_factory">0</span></div>
+                    <button class="buy-btn" data-upgrade="lemon_factory">Cost: 5,000 🍋</button>
+                </div>
+                <div class="upgrade">
+                    <h3>🌍 Lemon Planet</h3>
+                    <p>+500 lemons per second</p>
+                    <div class="upgrade-info">You own: <span class="owned-lemon_planet">0</span></div>
+                    <button class="buy-btn" data-upgrade="lemon_planet">Cost: 50,000 🍋</button>
+                </div>
+                <div class="upgrade">
+                    <h3>☀️ Solar Lemon</h3>
+                    <p>+2,000 lemons per second</p>
+                    <div class="upgrade-info">You own: <span class="owned-solar_lemon">0</span></div>
+                    <button class="buy-btn" data-upgrade="solar_lemon">Cost: 500,000 🍋</button>
+                </div>
+                <div class="upgrade">
+                    <h3>🌌 Galaxy Lemon</h3>
+                    <p>+10,000 lemons per second</p>
+                    <div class="upgrade-info">You own: <span class="owned-galaxy_lemon">0</span></div>
+                    <button class="buy-btn" data-upgrade="galaxy_lemon">Cost: 5,000,000 🍋</button>
+                </div>
+                <div class="upgrade">
+                    <h3>🌠 Universe Lemon</h3>
+                    <p>+50,000 lemons per second</p>
+                    <div class="upgrade-info">You own: <span class="owned-universe_lemon">0</span></div>
+                    <button class="buy-btn" data-upgrade="universe_lemon">Cost: 50,000,000 🍋</button>
+                </div>
+                <div class="upgrade">
+                    <h3>♾️ Multiversal Lemon</h3>
+                    <p>+500,000 lemons per second</p>
+                    <div class="upgrade-info">You own: <span class="owned-multiversal_lemon">0</span></div>
+                    <button class="buy-btn" data-upgrade="multiversal_lemon">Cost: 500,000,000 🍋</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="footer">
+            <div class="button-group">
+                <button id="resetBtn" class="reset-btn">🔄 Reset Game</button>
+                <button class="settings-btn" onclick="openSettings()">⚙️ More Settings</button>
+            </div>
+
+            <p>🍋 Lemon Clicker v5.0 | Made with ❤️ | © 2024</p>
+            <p style="font-size: 0.8em; color: #ccc;">Have fun clicking! 🎮 | <span style="color: #5865F2; cursor: pointer;" onclick="openDiscord()">Join Discord 💜</span></p>
+        </div>
+    </div>
+
+    <script>
+        // YOUR DISCORD SERVER LINK - ALREADY SET!
+        const DISCORD_INVITE_LINK = 'https://discord.gg/bUw6st3xg';
+
+        // Game state with localStorage
+        const gameState = {
+            lemons: 0,
+            per_click: 1,
+            per_second: 0,
+            totalClicks: 0,
+            totalLemonEarned: 0,
+            playStartTime: Date.now(),
+            upgrades: {
+                'better_click': { cost: 10, add_click: 5, owned: 0 },
+                'auto_picker': { cost: 50, per_sec: 1, owned: 0 },
+                'lemon_tree': { cost: 200, per_sec: 5, owned: 0 },
+                'mega_farm': { cost: 1000, per_sec: 20, owned: 0 },
+                'super_click': { cost: 500, add_click: 5, owned: 0 },
+                'lemon_factory': { cost: 5000, per_sec: 100, owned: 0 },
+                'lemon_planet': { cost: 50000, per_sec: 500, owned: 0 },
+                'solar_lemon': { cost: 500000, per_sec: 2000, owned: 0 },
+                'galaxy_lemon': { cost: 5000000, per_sec: 10000, owned: 0 },
+                'universe_lemon': { cost: 50000000, per_sec: 50000, owned: 0 },
+                'multiversal_lemon': { cost: 500000000, per_sec: 500000, owned: 0 }
+            }
+        };
+
+        // DOM elements
+        const lemonBtn = document.getElementById('lemonBtn');
+        const lemonCount = document.getElementById('lemonCount');
+        const perClick = document.getElementById('perClick');
+        const perSecond = document.getElementById('perSecond');
+        const resetBtn = document.getElementById('resetBtn');
+        const buyBtns = document.querySelectorAll('.buy-btn');
+        const discordModal = document.getElementById('discordModal');
+        const settingsModal = document.getElementById('settingsModal');
+        const visitorCountSpan = document.getElementById('visitorCount');
+        const clickValueSpan = document.getElementById('clickValue');
+
+        // Track visitor
+        function trackVisitor() {
+            let visitors = parseInt(localStorage.getItem('visitors') || '0');
+            visitors++;
+            localStorage.setItem('visitors', visitors.toString());
+            visitorCountSpan.textContent = visitors;
+
+            // Simulate online users (random)
+            const onlineUsers = Math.floor(Math.random() * visitors) + 1;
+            document.getElementById('onlineUsers').textContent = onlineUsers;
+        }
+
+        // Load game from localStorage
+        function loadGame() {
+            const saved = localStorage.getItem('lemonGame');
+            if (saved) {
+                const data = JSON.parse(saved);
+                gameState.lemons = data.lemons || 0;
+                gameState.per_click = data.per_click || 1;
+                gameState.per_second = data.per_second || 0;
+                gameState.totalClicks = data.totalClicks || 0;
+                gameState.totalLemonEarned = data.totalLemonEarned || 0;
+                gameState.upgrades = data.upgrades || gameState.upgrades;
+            }
+        }
+
+        // Save game to localStorage
+        function saveGame() {
+            localStorage.setItem('lemonGame', JSON.stringify(gameState));
+        }
+
+        // Show Discord modal only once on first visit
+        function showDiscordModalOnce() {
+            const hasSeenDiscordModal = localStorage.getItem('hasSeenDiscordModal');
+            if (!hasSeenDiscordModal) {
+                discordModal.style.display = 'flex';
+                localStorage.setItem('hasSeenDiscordModal', 'true');
+            }
+        }
+
+        // Update display
+        function updateDisplay() {
+            lemonCount.textContent = Math.floor(gameState.lemons).toLocaleString();
+            perClick.textContent = gameState.per_click.toLocaleString();
+            perSecond.textContent = gameState.per_second.toLocaleString();
+            clickValueSpan.textContent = `+${gameState.per_click.toLocaleString()} per click`;
+
+            buyBtns.forEach(btn => {
+                const upgradeId = btn.dataset.upgrade;
+                const upgrade = gameState.upgrades[upgradeId];
+                const canAfford = gameState.lemons >= upgrade.cost;
+                btn.disabled = !canAfford;
+                btn.textContent = `Cost: ${upgrade.cost.toLocaleString()} 🍋`;
+                
+                // Update owned count
+                const ownedSpan = document.querySelector(`.owned-${upgradeId}`);
+                if (ownedSpan) ownedSpan.textContent = upgrade.owned;
+            });
+
+            saveGame();
+            checkAchievements();
+        }
+
+        // Click handler
+        lemonBtn.addEventListener('click', () => {
+            gameState.lemons += gameState.per_click;
+            gameState.totalClicks++;
+            gameState.totalLemonEarned += gameState.per_click;
+            updateDisplay();
+
+            // Animation
+            lemonBtn.style.transform = 'scale(0.85)';
+            setTimeout(() => {
+                lemonBtn.style.transform = 'scale(1)';
+            }, 100);
+
+            // Click sound effect
+            if (document.getElementById('soundToggle')?.checked) {
+                playSound();
+            }
+        });
+
+        // Upgrade handlers
+        buyBtns.forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                const upgradeId = e.target.dataset.upgrade;
+                const upgrade = gameState.upgrades[upgradeId];
+
+                if (gameState.lemons >= upgrade.cost) {
+                    gameState.lemons -= upgrade.cost;
+                    upgrade.owned++;
+
+                    if (upgradeId === 'better_click' || upgradeId === 'super_click') {
+                        gameState.per_click += upgrade.add_click;
+                    } else {
+                        gameState.per_second += upgrade.per_sec;
+                    }
+
+                    upgrade.cost = Math.floor(upgrade.cost * 1.15);
+                    updateDisplay();
+                } else {
+                    alert('Not enough lemons! 😢');
+                }
+            });
+        });
+
+        // Reset game
+        resetBtn.addEventListener('click', () => {
+            if (confirm('🚨 Are you absolutely sure? This will reset EVERYTHING!')) {
+                if (confirm('Last chance! Type "YES" in the prompt to confirm.')) {
+                    gameState.lemons = 0;
+                    gameState.per_click = 1;
+                    gameState.per_second = 0;
+                    gameState.totalClicks = 0;
+                    gameState.totalLemonEarned = 0;
+                    gameState.upgrades = {
+                        'better_click': { cost: 10, add_click: 5, owned: 0 },
+                        'auto_picker': { cost: 50, per_sec: 1, owned: 0 },
+                        'lemon_tree': { cost: 200, per_sec: 5, owned: 0 },
+                        'mega_farm': { cost: 1000, per_sec: 20, owned: 0 },
+                        'super_click': { cost: 500, add_click: 5, owned: 0 },
+                        'lemon_factory': { cost: 5000, per_sec: 100, owned: 0 },
+                        'lemon_planet': { cost: 50000, per_sec: 500, owned: 0 },
+                        'solar_lemon': { cost: 500000, per_sec: 2000, owned: 0 },
+                        'galaxy_lemon': { cost: 5000000, per_sec: 10000, owned: 0 },
+                        'universe_lemon': { cost: 50000000, per_sec: 50000, owned: 0 },
+                        'multiversal_lemon': { cost: 500000000, per_sec: 500000, owned: 0 }
+                    };
+                    localStorage.removeItem('lemonGame');
+                    updateDisplay();
+                    alert('Game has been reset! 🔄');
+                }
+            }
+        });
+
+        // Auto-generate lemons per second
+        setInterval(() => {
+            gameState.lemons += gameState.per_second;
+            gameState.totalLemonEarned += gameState.per_second;
+            updateDisplay();
+        }, 1000);
+
+        // DISCORD FUNCTIONS
+        function openDiscord() {
+            window.open(DISCORD_INVITE_LINK, '_blank');
+        }
+
+        function closeDiscord() {
+            discordModal.style.display = 'none';
+        }
+
+        // SETTINGS FUNCTIONS
+        function openSettings() {
+            settingsModal.style.display = 'block';
+            updateStatsDisplay();
+        }
+
+        function closeSettings() {
+            settingsModal.style.display = 'none';
+        }
+
+        function updateStatsDisplay() {
+            const playTime = Math.floor((Date.now() - gameState.playStartTime) / 60000);
+            const upgradesCount = Object.values(gameState.upgrades).reduce((sum, u) => sum + u.owned, 0);
+
+            document.getElementById('totalLemons').textContent = Math.floor(gameState.totalLemonEarned).toLocaleString();
+            document.getElementById('playTime').textContent = playTime;
+            document.getElementById('totalClicks').textContent = gameState.totalClicks.toLocaleString();
+            document.getElementById('totalUpgrades').textContent = upgradesCount;
+        }
+
+        function changeTheme() {
+            const theme = document.getElementById('themeSelect').value;
+            const body = document.body;
+
+            if (theme === 'light') {
+                body.style.background = 'linear-gradient(135deg, #667eea 0%, #5f63eb 100%)';
+            } else if (theme === 'green') {
+                body.style.background = 'linear-gradient(135deg, #11998e 0%, #38ef7d 100%)';
+            } else {
+                body.style.background = 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)';
+            }
+
+            localStorage.setItem('theme', theme);
+        }
+
+        function exportGame() {
+            const data = {
+                gameState: gameState,
+                exportDate: new Date().toLocaleString()
+            };
+
+            const json = JSON.stringify(data, null, 2);
+            const blob = new Blob([json], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `lemon-clicker-backup-${Date.now()}.json`;
+            a.click();
+
+            alert('✅ Game data exported successfully!');
+        }
+
+        function importGame() {
+            const input = document.createElement('input');
+            input.type = 'file';
+            input.accept = 'application/json';
+            input.onchange = (e) => {
+                const file = e.target.files[0];
+                const reader = new FileReader();
+                reader.onload = (event) => {
+                    try {
+                        const data = JSON.parse(event.target.result);
+                        Object.assign(gameState, data.gameState);
+                        localStorage.setItem('lemonGame', JSON.stringify(gameState));
+                        updateDisplay();
+                        playSound();
+                        alert('✅ Game data imported successfully!');
+                    } catch (err) {
+                        alert('❌ Invalid backup file!');
+                    }
+                };
+                reader.readAsText(file);
+            };
+            input.click();
+        }
+
+        function deleteAllData() {
+            if (confirm('⚠️ This will DELETE everything! Are you sure?')) {
+                if (prompt('Type "DELETE" to confirm:') === 'DELETE') {
+                    localStorage.removeItem('lemonGame');
+                    location.reload();
+                }
+            }
+        }
+
+        // ACHIEVEMENTS
+        function checkAchievements() {
+            const container = document.getElementById('achievementsContainer');
+            const lemons = Math.floor(gameState.lemons);
+
+            const achievements = [
+                { id: 'first100', threshold: 100, text: '🎯 Century! - Earned 100 lemons' },
+                { id: 'first1k', threshold: 1000, text: '🌟 Millionaire! - Earned 1,000 lemons' },
+                { id: 'first10k', threshold: 10000, text: '👑 Tycoon! - Earned 10,000 lemons' },
+                { id: 'first100k', threshold: 100000, text: '💎 Legend! - Earned 100,000 lemons' },
+                { id: 'first1m', threshold: 1000000, text: '🌍 Planetary! - Earned 1,000,000 lemons' },
+                { id: 'first10m', threshold: 10000000, text: '☀️ Solar! - Earned 10,000,000 lemons' },
+                { id: 'first100m', threshold: 100000000, text: '🌌 Galactic! - Earned 100,000,000 lemons' }
+            ];
+
+            achievements.forEach(achievement => {
+                const unlocked = localStorage.getItem(`achievement_${achievement.id}`);
+                if (!unlocked && lemons >= achievement.threshold) {
+                    container.innerHTML += `<div class="achievement">${achievement.text}</div>`;
+                    localStorage.setItem(`achievement_${achievement.id}`, 'true');
+                    playSound();
+                }
+            });
+        }
+
+        // Sound effect function
+        function playSound() {
+            try {
+                const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                const oscillator = audioContext.createOscillator();
+                const gainNode = audioContext.createGain();
+
+                oscillator.connect(gainNode);
+                gainNode.connect(audioContext.destination);
+
+                oscillator.frequency.value = 800;
+                gainNode.gain.setValueAtTime(0.1, audioContext.currentTime);
+                gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.1);
+
+                oscillator.start(audioContext.currentTime);
+                oscillator.stop(audioContext.currentTime + 0.1);
+            } catch(e) {
+                // Audio not supported, silently fail
+            }
+        }
+
+        // Modal close on outside click
+        window.onclick = function(event) {
+            if (event.target == settingsModal) closeSettings();
+            if (event.target == discordModal) closeDiscord();
+        }
+
+        // Initialize
+        trackVisitor();
+        loadGame();
+        updateDisplay();
+        showDiscordModalOnce();
+    </script>
+</body>
+</html>
